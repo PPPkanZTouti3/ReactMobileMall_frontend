@@ -1,0 +1,140 @@
+.order-page{
+    .order-tip{
+        display: flex;
+        align-items:center;
+        justify-content: center;
+        min-height: 60px;
+        color:#555;
+    }
+    .order-main{
+        .search-box{
+            display: flex;
+            align-items: center;
+            background-color: #efeff4;
+            >div{
+                flex: 1;
+            }
+            button{
+                display: block;
+                padding: 0 6px;
+                height: 30px;
+                line-height: 30px;
+                font-size: 14px;
+                text-align: center;
+                border-radius: 3px;
+                background: #ff5b05;
+                border:1px solid #ff5b05;
+                color: #fff;
+                margin-right:10px;
+            }
+        }
+        .order-div{
+            height:100%;
+        }
+        .order-item{
+            position: relative;
+            padding: 0 10px 10px;
+            background: #fff;
+            .order-id{
+                position: relative;
+                height: 45px;
+                line-height: 45px;
+                font-size: 14px;
+                color: #333;
+                .label{
+                    color: #999;
+                }
+            }
+            .order-id::after {
+                content: "";
+                position: absolute;
+                z-index: 1;
+                pointer-events: none;
+                background-color: #e5e5e5;
+                height: 1px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                margin: 0 -10px;
+            }
+            .order-state{
+                display: block;
+                padding: 10px 0;
+                position: relative;
+                .o-left{
+                    div{
+                        span:first-child{
+                            color:#999;
+                        }
+                    }
+                    .state{
+                        span:nth-child(2){
+                            color: #3985ff;
+                        }
+                    }
+                    .price{
+                        span:nth-child(2){
+                            color:#ff5b05;
+                        }
+                    }
+                }
+                .o-right{
+                    position: absolute;
+                    top: 17px;
+                    right: 0px;
+                    button{
+                        height:26px;
+                        line-height:26px;
+                        margin:0;
+                        padding:0 15px;
+                        border-radius:3px;
+                        background-color: #ff5b05;
+                        color:#fff;
+                        border:0;
+                    }
+                }
+            }
+            .order-list{
+                background:#efefef;
+                .order-goods{
+                    position: relative;
+                    min-height:90px;
+                    padding:10px;
+                    img{
+                        width:80px;
+                        height:80px;
+                        top:50%;
+                        margin-top:-40px;
+                        left:5px;
+                        display: block;
+                        position: absolute;
+                    }
+                    .right{
+                        margin-left:90px;
+                        .title{
+                            overflow : hidden;
+                            text-overflow: ellipsis;
+                            display: -webkit-box;
+                            -webkit-line-clamp: 2;
+                            /*! autoprefixer: ignore next */
+                            -webkit-box-orient: vertical;
+                        }
+                        .piece{
+                            margin-top:5px;
+                            color:#555;
+                            display: flex;
+                            justify-content: space-between;
+                        }
+                        .sku{
+                            margin-top:5px;
+                            color:#555;
+                        }
+                    }
+                }
+                .order-goods:not(:first-child){
+                    border-top:1px solid #ddd;
+                }
+            }
+        }
+    }
+}

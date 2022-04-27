@@ -1,0 +1,23 @@
+.purse-page{
+    .purse-main{
+        .mypurse{
+            img{
+                width:120px;
+                display: block;
+                margin:0 auto;
+            }
+            .tip{
+                text-align: center;
+            }
+            .price{
+                text-align: center;
+                font-size:28px;
+                color:#ff5b05;
+                font-weight: bold;
+                span{
+                    font-size:18px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+.login-page{
+    height:100%;
+    .logo-container{
+        margin-top:30px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    h2.title{
+        text-align: center;
+    }
+    .form{
+        border-right:1px solid #eee;
+        border-left:1px solid #eee;
+    }
+    .error-msg{
+        color:red;
+        padding-left:15px;
+    }
+}

@@ -1,0 +1,42 @@
+.search-page{
+    .search-main{
+        background-color: #fff;
+        padding:10px;
+        .search-land{
+            label{
+                margin-bottom:10px;
+                display: flex;
+                justify-content: space-between;
+                span{
+                    font-size:16px;
+                }
+                img{
+                    width:16px;
+                    height:16px;
+                    display: block;
+                }
+            }
+            .search-tag{
+                overflow: hidden;
+            }
+        }
+        .search-hot{
+            margin-top:10px;
+        }
+        ul,li{
+            list-style: none;
+            padding:0;
+            margin:0;
+        }
+        .list{
+            padding:10px 0;
+            border-bottom:1px solid #eee;
+        }
+        .list:last-child{
+            border-bottom:0;
+        }
+    }
+    .searct-lists{
+        padding:0 10px;
+    }
+}

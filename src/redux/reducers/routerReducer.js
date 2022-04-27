@@ -1,4 +1,4 @@
-import {CHANGEPATH} from '@types/routerType'
+import {CHANGEPATH} from '../action-types'
 const initState={
     path:null,
     paths:['/','/index','/cate','/cart','/my']

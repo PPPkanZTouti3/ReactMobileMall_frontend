@@ -1,0 +1,107 @@
+.integral-page{
+    .integraldetail{
+        padding-right:10px;
+        font-size:14px;
+    }
+    .integral-main{
+        .integral-wrap{
+            min-height:70px;
+            line-height:70px;
+            text-align: left;
+            background: linear-gradient(90deg,#eb3c3c,#ff7459);
+            box-shadow: 0 2px 5px rgba(255,98,98,.4);
+            font-size:20px;
+            padding-left:15px;
+            color:#fff;
+            span{
+                font-size:14px;
+            }
+        }
+        .integral-body{
+            margin-top:10px;
+            background-color: #fff;
+            .integral-item{
+                min-height:90px;
+                position: relative;
+                padding:10px 10px 10px 0;
+                .left{
+                    position: absolute;
+                    width:90px;
+                    height:90px;
+                    top:10px;
+                    left:0;
+                    line-height: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    color:#555;
+                }
+                .right{
+                    margin-left:190px;
+                    .title{
+                        margin-top:10px;
+                        overflow : hidden;
+                        text-overflow: ellipsis;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        /*! autoprefixer: ignore next */
+                        -webkit-box-orient: vertical;
+                    }
+                    .price{
+                        margin-top:10px;
+                        color:#ff5b05;
+                        font-weight: bold;
+                        span{
+                            font-size:10px;
+                        }
+                    }
+                }
+                img{
+                    width:90px;
+                    height:90px;
+                    top:10px;
+                    left:90px;
+                    border:1px solid #eee;
+                    position: absolute;
+                    display: block;
+                }
+            }
+        }
+        .integral-item:not(:first-child){
+            border-top:1px solid #eee;
+        }
+        .integral-detail{
+            background-color: #fff;
+            .integral-item{
+                position: relative;
+                padding:10px;
+                height:50px;
+                .i-left{
+                    margin-right:80px;
+                    h2{
+                        margin:0;
+                        padding:0;
+                        font-size:16px;
+                        margin-bottom:10px;
+                    }
+                }
+                .i-right{
+                    width:80px;
+                    position: absolute;
+                    top:10px;
+                    right:10px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size:20px;
+                    line-height:50px;
+                    color:#000;
+                    font-weight: bold;
+                }
+                .red{
+                    color:#ff5b05;
+                }
+            }
+        }
+    }
+}

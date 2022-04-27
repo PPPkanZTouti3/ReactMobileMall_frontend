@@ -1,0 +1,53 @@
+.browse-record-page{
+    .browse-record-main{
+        .browse-wrap{
+            padding:10px;
+            background-color: #fff;
+            margin-bottom:10px;
+            .browse-time{
+                line-height: 34px;
+                height: 34px;
+                border-bottom: 1px solid #eee;
+                font-size:14px;
+                color:#555;
+            }
+            .browse-main{
+                padding-top:10px;
+                .browse-item{
+                    padding:10px 0;
+                    position: relative;
+                    min-height:90px;
+                    img{
+                        position: absolute;
+                        top:10px;
+                        left:0;
+                        display: block;
+                        border: 1px solid #eee;
+                    }
+                    .browse-right{
+                        margin-left:100px;
+                        .title{
+                            overflow : hidden;
+                            text-overflow: ellipsis;
+                            display: -webkit-box;
+                            -webkit-line-clamp: 2;
+                            /*! autoprefixer: ignore next */
+                            -webkit-box-orient: vertical;
+                        }
+                        .price{
+                            margin-top:10px;
+                            color:#ff5b05;
+                            font-weight: bold;
+                            span{
+                                font-size:10px;
+                            }
+                        }
+                    }
+                }
+                .browse-item:not(:first-child){
+                    border-top:1px solid #eee;
+                }
+            }
+        }
+    }
+}

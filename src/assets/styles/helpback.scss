@@ -1,0 +1,61 @@
+.helpback-page{
+    .myfeedback{
+        padding-right:10px;
+        font-size:14px;
+    }
+    .helpback-div{
+        background-color: #fff;
+    }
+    .helpback-tip{
+        display: flex;
+        align-items:center;
+        justify-content: center;
+        min-height: 60px;
+        color:#555;
+    }
+    .help-img{
+        padding:10px;
+        img{
+            display: block;
+            max-width: 100%;
+        }
+    }
+    .feedback{
+        .feedback-title{
+            font-weight: normal;
+            margin:0;
+            padding:10px 0 0 10px;;
+        }
+        .feedback-check{
+            overflow: hidden;
+            .feedback-btn{
+                float:left;
+                display: flex;
+                justify-content: center;
+                padding:10px;
+                button{
+                    height:34px;
+                    line-height: 34px;
+                    border-radius:3px;
+                    padding:0 10px;
+                    background-color: #fff;
+                    border:1px solid #eee;
+                }
+                button.active{
+                    background-color: #ff5b05;
+                    border:1px solid #ff5b05;
+                    color:#fff;
+                }
+            }
+        }
+        .feedback-text{
+            padding:0 10px;
+        }
+        .feedback-footer{
+            padding:10px;
+            .am-button{
+                font-size:16px;
+            }
+        }
+    }
+}

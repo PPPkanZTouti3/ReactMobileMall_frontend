@@ -1,7 +1,8 @@
-import {LOADCATE} from '@types/loadType'
+import {LOADCATE} from '../action-types'
 import axios from 'axios'
+import { reqCate } from '@/api'
 
 export const loadCate = () => async (dispatch) => {
-    let {data} = await axios.get('/api/cate').then(res=>res)
+    let {data} = await reqCate()
     dispatch({type:LOADCATE,cates:data.data})
 }

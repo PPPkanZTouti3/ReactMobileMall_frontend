@@ -1,0 +1,23 @@
+.user-info-page {
+    .user-info-header {
+        display: flex;
+        height: 44px;
+        justify-content: space-between;
+        align-items: center;
+        .user-info-back {
+            padding-left: 5px;
+        }
+        .user-info-title {
+            line-height: 50px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .user-info-home{
+            padding-right: 5px;
+            img {
+                height: 24px;
+                width: 24px;
+            }
+        }
+    }
+}

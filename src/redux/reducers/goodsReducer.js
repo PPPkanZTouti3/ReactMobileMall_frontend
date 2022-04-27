@@ -1,4 +1,4 @@
-import {GETGOODSLIST} from '../types/goodsType'
+import {GETGOODSLIST} from '../action-types'
 
 const initState ={
     goods:[]

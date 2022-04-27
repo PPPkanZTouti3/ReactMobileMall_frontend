@@ -1,4 +1,4 @@
-import {GETGOODSLIST} from '../types/goodsType'
+import {GETGOODSLIST} from '@/redux/action-types'
 import axios from 'axios'
 
 export const getGoodsList = (search) => async(dispatch)=>{

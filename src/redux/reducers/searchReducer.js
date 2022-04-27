@@ -1,4 +1,4 @@
-import {CHANGEVAL} from '@types/searchType'
+import {CHANGEVAL} from '../action-types'
 const initState = {
     val:''
 }

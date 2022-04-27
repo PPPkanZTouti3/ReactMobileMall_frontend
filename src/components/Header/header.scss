@@ -1,0 +1,30 @@
+.am-navbar-light{
+    color:#000;
+}
+.am-navbar-title{
+    font-size:16px;
+}
+.am-navbar{
+    border-bottom:1px solid #eee;
+}
+.am-navbar-left{
+    padding-left:0;
+}
+.am-navbar-right{
+    margin-right:0;
+    svg{
+        padding-right:15px;
+    }
+}
+.left{
+    width:44px;
+    height:44px;
+    line-height:44px;
+    text-align: center;
+    img{
+        width:14px;
+        height:14px;
+        display: block;
+        padding:15px;
+    }
+}

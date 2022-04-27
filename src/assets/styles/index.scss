@@ -1,0 +1,125 @@
+.index-page{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    .main{
+        flex:1;
+        overflow-y: auto;
+        margin-bottom: 50px;
+        .header{
+            background-color: #efeff4;
+        }
+        .body{
+            .advertising{
+                margin:10px 0;
+            }
+            .bdr{
+                margin-bottom:10px;
+                clear: right;
+                overflow: hidden;
+                border-top:1px solid #eee;
+                border-bottom:1px solid #eee;
+                display: flex;
+                flex-wrap: wrap;
+                .bdr-item{
+                    flex:1;
+                    width:25%;
+                    min-width: 25%;
+                    max-width: 25%;
+                    background-color: #fff;
+                    float: left;
+                    border:1px solid #eee;
+                    margin:-1px;
+                    padding-bottom:10px;
+                }
+                .item{
+                    display: block;
+                    text-indent: 5px;
+                    font-size: 100%;
+                    .title{
+                        color: #222;
+                        font-size: 17px;
+                        height:24px;
+                        line-height:24px;
+                        margin-top:5px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        overflow: hidden;
+                    }
+                    .desc{
+                        color: #666;
+                        font-size: 13px;
+                        margin: 5px 0;
+                        height:18px;
+                        line-height:18px;
+                        overflow: hidden;
+                        line-clamp: 1;
+                        /*! autoprefixer: ignore next */
+                        -webket-box-orient: vertical;
+                        /*! autoprefixer: ignore next */
+                        display: -webket-box;
+                    }
+                    .item-img{
+                        margin: 0 auto;
+                        display: block;
+                        width:80%;
+                    }
+                }
+                .bdr1-item{
+                    flex:1;
+                    width:50%;
+                    min-width: 50%;
+                    max-width: 50%;
+                    background-color: #fff;
+                    float: left;
+                    border:1px solid #eee;
+                    margin:-1px;
+                    padding-bottom:10px;
+                }
+                .bdr2-item{
+                    flex:1;
+                    width:50%;
+                    min-width: 50%;
+                    max-width: 50%;
+                    background-color: #fff;
+                    float: left;
+                    border:1px solid #eee;
+                    margin:-1px;
+                    .item{
+                        display: flex;
+                        text-indent: 5px;
+                        font-size: 100%;
+                        .left{
+                            width:50%;
+                        }
+                        .right {
+                            flex: 1;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                        .item-img{
+                            margin: 5px auto;
+                            display: block;
+                            width:95%;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    .footer{
+        width:100%;
+        box-shadow: 0 0 10px 0 hsla(0,6%,58%,.6);
+        position: fixed;
+        z-index: 10;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+}
+.am-search .am-search-input {
+    border-radius: 44px;
+}

@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import {connect} from 'react-redux'
+import {LocaleProvider} from 'antd-mobile'
+import {HashRouter} from 'react-router-dom'
+import Routes from './routes'
+import './assets/styles/common.scss'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    return (
+      <LocaleProvider>
+        <HashRouter>
+          <Routes></Routes>
+        </HashRouter>
+      </LocaleProvider>
+    );
+  }
 }
 
-export default App;
+export default connect()(App);

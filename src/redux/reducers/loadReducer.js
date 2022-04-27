@@ -1,4 +1,4 @@
-import {LOADCATE} from '@types/loadType'
+import {LOADCATE} from '../action-types'
 const initState={
     cates:[]
 }
