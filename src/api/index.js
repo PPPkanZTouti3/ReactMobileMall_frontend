@@ -4,7 +4,8 @@ import ajax from './ajax'
 //     message
 // } from 'antd';
 
-const BASE = 'http://127.0.0.1:5000'
+// const BASE = 'http://192.168.137.1:5000'
+const BASE = 'http://localhost:5000'
 
 // 注册
 export const reqRegister = (userName, password, phone) => ajax(BASE + '/register', {
@@ -43,8 +44,82 @@ export const reqDeleteAddress = (userId, addressId) => ajax(BASE + '/deleteAddre
 // 获取省市区 高德地图API
 export const reqAliMap = (key, keywords) => ajax('https://restapi.amap.com/v3/config/district', {key, keywords})
 
+// 根据groupId获取商品
+export const reqProdByGroupId = (_id) => ajax(BASE + '/getProdByGroupId', { _id })
 
+// 根据用户id获取购物车信息
+export const reqCartList = (userId) => ajax(BASE + '/getCart', { userId })
 
+// 删除购物车商品
+export const reqDeleteCartProd = (_ids) => ajax(BASE + '/delCartProd', _ids, 'POST')
+
+// 将商品添加至购物车
+export const reqAddToCart = (prod) => ajax(BASE + '/addToCart', prod, 'POST')
+
+// 生成订单
+export const reqAddOrder = (data) => ajax(BASE + '/addOrder', data, 'POST')
+
+// 在线支付 支付宝
+export const reqAliPay = (orderId, totalPrice) => ajax(BASE + '/aliPay', {orderId, totalPrice})
+
+// 处理销量和库存
+export const reqHandleSalesAndStock = (productList) => ajax(BASE + '/handleSalesAndStock', productList, 'POST')
+
+// 支付宝查询订单
+export const reqAliPayOrder = (orderId) => ajax(BASE + '/queryOrderAlipay', {orderId}, 'POST')
+
+// 取消订单
+export const reqCancelOrder = (orderId) => ajax(BASE + '/cancelOrder', { orderId }, 'POST')
+
+// 获取用户订单信息
+export const reqOrderList = (userId) => ajax(BASE + '/getOrderList', {userId})
+
+// 获取订单详情信息
+export const reqOrderDetail = (orderId) => ajax(BASE + '/getOrderDetail', {orderId})
+
+// 处理订单超时
+export const reqOrderOverTime = (orderId) => ajax(BASE + '/setOrderOverTime', {orderId}, 'POST')
+
+// 订单支付成功 修改状态
+export const reqOrderHasPayed = (orderId) => ajax(BASE + '/orderHasPayed', { orderId }, 'POST')
+
+// 模糊搜索商品
+export const reqSearchProd = (val) => ajax(BASE + '/searchProd', { val })
+
+// 推荐模块 搜索商品
+export const reqSearchProdFunc = (userId, val, score) => ajax(BASE + '/searchProdFunc', { userId, val, score }, 'POST')
+
+// 获取用户收藏的商品
+export const reqCollection = (_id) => ajax(BASE + '/collection', {_id})
+
+// 添加至收藏夹
+export const reqAddToCollection = (groupId, userId, score) => ajax(BASE + '/addToCollection', {groupId, userId, score}, 'POST')
+
+// 取消收藏
+export const reqDelCollection = (groupId, userId, score) => ajax(BASE + '/delCollection', {groupId, userId, score}, 'POST')
+
+// 检查商品是否已经收藏
+export const reqCheckCollected = (groupId, userId) => ajax(BASE + '/checkCollected', {groupId, userId})
+
+// 销量排行
+export const reqSales = () => ajax(BASE + '/sales')
+
+// 新品发售
+export const reqNews = () => ajax(BASE + '/news')
+
+// 浏览商品
+export const reqWatchProd = (userId, groupId, score) => ajax(BASE + '/watchProd', {userId, groupId, score}, 'POST')
+
+// 获取浏览记录信息
+export const reqBrowseInfo = (userId) => ajax(BASE + '/browseInfo', {userId})
+
+// 推荐模块 购买商品
+export const reqBuyProd = (userId, productList, score) => ajax(BASE + '/buyProd', {userId, productList, score}, 'POST')
+
+// 推荐商品
+export const reqRecommend = (userId) => ajax(BASE + '/recommend', {userId})
+
+export const reqRecommendProd = (prodList) => ajax(BASE + '/recommendProd', {prodList}, 'POST')
 
 /**======================================================================== */
 // 获取一级或某个二级分类列表
@@ -135,6 +210,7 @@ export const reqAddOrUpdateUser = (user) => ajax(BASE + '/manage/user/' + (user.
 /**
  * mock
  */
-export const reqCartList = () => ajax(BASE + '/cartList')
+
 
 export const reqCate = () => ajax(BASE + '/cate')
+

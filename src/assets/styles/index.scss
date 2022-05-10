@@ -15,30 +15,40 @@
             }
             .bdr{
                 margin-bottom:10px;
+                height: 90px;
                 clear: right;
                 overflow: hidden;
                 border-top:1px solid #eee;
                 border-bottom:1px solid #eee;
                 display: flex;
+                justify-content: space-around;
                 flex-wrap: wrap;
                 .bdr-item{
-                    flex:1;
-                    width:25%;
-                    min-width: 25%;
-                    max-width: 25%;
+                    // flex:1;
+                    width: 48%;
+                    height: 90px;
+                    // min-width: 25%;
+                    // max-width: 25%;
                     background-color: #fff;
                     float: left;
                     border:1px solid #eee;
                     margin:-1px;
                     padding-bottom:10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
                 .item{
                     display: block;
                     text-indent: 5px;
                     font-size: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                     .title{
                         color: #222;
-                        font-size: 17px;
+                        font-size: 24px;
+                        font-weight: bold;
                         height:24px;
                         line-height:24px;
                         margin-top:5px;
@@ -46,24 +56,13 @@
                         text-overflow: ellipsis;
                         white-space: nowrap;
                         overflow: hidden;
+                        padding-left: 5px;
                     }
-                    .desc{
-                        color: #666;
-                        font-size: 13px;
-                        margin: 5px 0;
-                        height:18px;
-                        line-height:18px;
-                        overflow: hidden;
-                        line-clamp: 1;
-                        /*! autoprefixer: ignore next */
-                        -webket-box-orient: vertical;
-                        /*! autoprefixer: ignore next */
-                        display: -webket-box;
-                    }
+                    
                     .item-img{
                         margin: 0 auto;
                         display: block;
-                        width:80%;
+                        width: 45px;
                     }
                 }
                 .bdr1-item{
@@ -107,6 +106,22 @@
                     }
                 }
 
+            }
+            .recommend {
+                position: relative;
+                text-align: center;
+                img {
+                    width: 18px;
+                    height: 18px;
+                    margin: auto 0;
+                    position: absolute;
+                    // top: 50%;
+                    // left: 50%;
+                    transform: translateX(-25px)
+                }
+                font-weight: bold;
+                line-height: 20px;
+                font-size: 18px;
             }
         }
     }

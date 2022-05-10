@@ -108,6 +108,17 @@
                                     line-height: 21px;
                                     color: #333;
                                 }
+                                .goods-desc{
+                                    overflow : hidden;
+                                    text-overflow: ellipsis;
+                                    display: -webkit-box;
+                                    -webkit-line-clamp: 2;
+                                    /*! autoprefixer: ignore next */
+                                    -webkit-box-orient: vertical;
+                                    font-size: 12px;
+                                    line-height: 21px;
+                                    color: #999;
+                                }
                             }
                             .info-price{
                                 line-height: 18px;
@@ -166,4 +177,25 @@
 }
 .am-list-item .am-list-line .am-list-extra{
     font-size:14px;
+}
+
+.online-pay-title {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+    .online-pay-price {
+        color: red;
+    }
+}
+
+.online-pay-time {
+    padding-top: 8px;
+    text-align: center;
+    font-size: 14px;
+    color: #999
+}
+
+.adm-dialog-footer {
+    color: #ff5b05
 }

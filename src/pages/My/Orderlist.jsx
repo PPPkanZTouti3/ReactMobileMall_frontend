@@ -3,8 +3,8 @@ import {connect} from 'react-redux'
 import { Tabs, SearchBar, SwipeAction, PullToRefresh } from 'antd-mobile'
 import Header from '@/components/Header/Header'
 import Loading from '@/components/Loading'
-import axios from 'axios'
-
+import { reqOrderList } from '@/api'
+import Countdown from '@/components/Countdown'
 import '@/assets/styles/orderlist.scss'
 
 class Orderlist extends Component {
@@ -17,11 +17,12 @@ class Orderlist extends Component {
         { title: '全部', sub: 0 },
         { title: '待付款', sub: 1 },
         { title: '待发货', sub: 2 },
-        { title: '待评价', sub: 3 },
-        { title: '退货售后', sub: 4 },
+        { title: '待收货', sub: 3 },
+        { title: '待评价', sub: 4 },
       ],
-      val:'',
+      val:'', // 搜索输入的值
       down:false,
+      data: null,
       height: document.documentElement.clientHeight-134,
       list:[],
       status:orderIndex!==null?parseInt(orderIndex,10):0,
@@ -40,35 +41,74 @@ class Orderlist extends Component {
         pageSize:this.state.pageSize,
         status:this.state.status
       }
-      let {data} = await axios.post('/api/alliance/order/list',params).then(res=>res)
-      this.setState({
-        list:data.data,
-        loading:false,
-        orderTip:data.data.length>0?false:true
-      },()=>{
-        cb&&cb()
-      })
+      let res = await reqOrderList(this.props.user._id)
+      if(res.status === 0) {
+        console.log(res)
+        this.setState({
+          data:res.data,
+          list:res.data,
+          loading:false,
+          orderTip:res.data.length>0?false:true
+        },()=>{
+          cb&&cb()
+        })
+      }
+      else {
+        this.setState({
+          data:[],
+          loading:false,
+          orderTip:res.data.length>0?false:true
+        },()=>{
+          cb&&cb()
+        })
+      }
+      
     })()
   }
   changeStatus(index){
+    
+    const { data } = this.state;
+    console.log('index',data)
+    let list = [];
+    if(index === 0) {
+      list = data;
+    }
+    else if(index === 1) {
+      list = data.filter(item => item.payStatus === 0 && item.isOverTime === 0)
+    }
+    else if(index === 2) {
+      list = data.filter(item => item.payStatus === 1)
+    }
+    else if(index === 3) {
+      list = data.filter(item => item.payStatus === 2)
+    }
+    else {
+      list = data.filter(item => item.payStatus === 3)
+    }
     this.setState({
       orderIndex:index,
       status:index,
-      loading:true,
+      loading:false,
       orderTip:false,
-      list:[],
+      list:list,
       pageNumber:1,
       pageSize:1,
       refreshing:false
-    },()=>{
-      this.getOrderList()
     })
   }
   onRefresh(){
     
   }
+
+  payOrder = () => {
+
+  }
+
   componentDidMount(){
     this.getOrderList()
+    this.setState({
+      list: this.state.data || []
+    })
   }
   
   render() {
@@ -173,16 +213,38 @@ class Orderlist extends Component {
                             <div className="o-left">
                               <div className="state">
                                 <span>状&nbsp;&nbsp;&nbsp;&nbsp;态：</span>
-                                <span>{item.orderStatusTxt}</span>
+                                <span>
+                                  {
+                                    item.payStatus === 0 ? '待付款' : (
+                                      item.payStatus === 1 ? '待发货' : (
+                                        item.payStatus === 2 ? '运输中' : '已签收'
+                                      )
+                                    )
+                                  }
+                                </span>
                               </div>
                               <div className="price">
                                 <span>总&nbsp;&nbsp;&nbsp;&nbsp;价：</span>
-                                <span>￥{item.orderMoney.toFixed(2)}</span>
+                                <span>￥{item.totalPrice.toFixed(2)}</span>
                               </div>
                             </div>
-                            <div className="o-right">
-                              <button>支付</button>
-                            </div>
+                            {
+                              item.isOverTime ? (
+                                <div className="o-right">
+                                    <p className='over-time'>已超时</p>
+                                  </div>
+                              ) : (
+                                item.payStatus ? null : (
+                                  <div className="o-right">
+                                    <button onClick={this.payOrder}>支付</button>
+                                    <Countdown 
+                                      payEndTime={item.payEndTime}
+                                      orderId={item.orderId}
+                                    />
+                                  </div>
+                                )
+                              )
+                            }
                           </div>
                           <div className="order-list" onClick={()=>{
                             this.props.history.push({
@@ -190,17 +252,17 @@ class Orderlist extends Component {
                             })
                           }}>
                             {
-                                item.orderItems.map((jtem,j)=>{
+                                item.products && item.products.map((jtem,j)=>{
                                   return (
                                     <div key={j} className="order-goods">
-                                      <img src={require(`@/assets/images/test/1.jpg`)} alt=""/>
+                                      <img src={jtem.productImage} alt=""/>
                                       <div className="right">
-                                        <div className="title">{jtem.name}</div>
+                                        <div className="title">{jtem.productName}</div>
                                         <div className="piece">
-                                          <span>￥{jtem.price}</span>
-                                          <span>{jtem.quantity}件</span>
+                                          <span>￥{jtem.price.toFixed(2)}</span>
+                                          <span>{jtem.count}件</span>
                                         </div>
-                                        <div className="sku">{jtem.sku}</div>
+                                        <div className="sku">{jtem.desc}</div>
                                       </div>
                                     </div>
                                   )
@@ -224,4 +286,6 @@ class Orderlist extends Component {
     )
   }
 }
-export default connect()(Orderlist)
+export default connect(
+  state => ({user: state.user})
+)(Orderlist)

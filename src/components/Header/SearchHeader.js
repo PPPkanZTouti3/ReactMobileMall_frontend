@@ -33,8 +33,9 @@ class SearchHeader extends Component {
     }
     //返回某个页面
     returnPage(){
-        this.props.history.push(this.props.pathname||'/')
-        sessionStorage.setItem('__search_prev_path__',this.props.pathname||'/')
+        this.props.history.go(-1)
+        // this.props.history.push(this.props.pathname||'/')
+        // sessionStorage.setItem('__search_prev_path__',this.props.pathname||'/')
     }
     //选择下拉菜单
     onSelect(opt){

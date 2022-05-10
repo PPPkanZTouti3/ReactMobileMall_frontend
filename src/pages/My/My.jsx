@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {withRouter} from 'react-router-dom'
 import {bindActionCreators} from 'redux'
 import * as routerAction from '@/redux/actions/routerAction'
 import {ActionSheet, Toast } from 'antd-mobile';
@@ -77,11 +78,13 @@ class My extends Component {
                                     <p>优化体验</p>
                                 </span>
                             </a>
-                            <a onClick={this.showShareActionSheet.bind(this)}>
-                                <img src={require(`@/assets/images/share.jpg`)} alt=""/>
+                            <a onClick={() => {
+                                this.goto('/collection')
+                            }}>
+                                <img src={require(`@/assets/images/collect.png`)} alt=""/>
                                 <span>
-                                    <div>我要分享</div>
-                                    <p>最好的朋友</p>
+                                    <div>我的收藏</div>
+                                    <p>查看收藏商品</p>
                                 </span>
                             </a>
                             <a onClick={this.toResetPwd}>
@@ -143,4 +146,4 @@ export default connect(
             router:bindActionCreators(routerAction,dispatch)
         }
     }
-)(My)
+)(withRouter(My))

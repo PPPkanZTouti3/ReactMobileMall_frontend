@@ -49,7 +49,7 @@ class Header extends Component {
             icon={
                 this.props.returnbtn?
                 <div className="left" onClick={()=>{
-                    this.props.history.push(this.props.pathname||'/')
+                    this.props.history.go(-1)
                     sessionStorage.setItem('__search_prev_path__',this.props.pathname||'/')
                     }}>
                     <img src={require("@/assets/images/return.png")} alt="return"/>

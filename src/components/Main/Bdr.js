@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {withRouter} from 'react-router-dom'
 import PropTypes from 'proptypes'
 
 class Bdr extends Component {
@@ -11,16 +12,17 @@ class Bdr extends Component {
                 {
                     this.props.data.map((item,i)=>{
                         return(
-                            <div key={i} className={this.props.cls}>
-                                <a className="item">
+                            <div key={i} className={this.props.cls} onClick={() => this.props.history.push(item.url + '')}>
+                                <div className="item">
+                                    <div className="desc">
+                                        <img className="item-img" src={require(`@/assets/images/${item.img}`)} alt="" />
+                                    </div>
+
                                     <div className="title">
                                         <span>{item.title}</span>
                                     </div>
-                                    <div className="desc">
-                                        <span>{item.desc}</span>
-                                    </div>
-                                    <img className="item-img" src={item.img} alt="" />
-                                </a>
+                                    
+                                </div>
                             </div>
                         )
                     })
@@ -32,4 +34,4 @@ class Bdr extends Component {
 Bdr.defaultProps={
     cls:'bdr-item'
 };
-export default Bdr
+export default withRouter(Bdr)

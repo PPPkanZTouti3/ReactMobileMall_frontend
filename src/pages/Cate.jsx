@@ -82,15 +82,11 @@ class Cate extends Component {
                                                                             'tabs-r-item':true,
                                                                             'flex':ktem.logo?false:true
                                                                         })}>
+                                                                            
                                                                             {
-                                                                                ktem.logo?
-                                                                                <img src={`http://exotic.gzfenzu.com/${ktem.logo}`} alt=""/>
-                                                                                :null
-                                                                            }
-                                                                            {
-                                                                                ktem.logo?
-                                                                                <span>{ktem.name}</span>
-                                                                                :<span  className="border">{ktem.name}</span>
+                                                                                // ktem.logo?
+                                                                                <span className="border" onClick={() => {this.props.history.push('/searchlist/' + ktem.name)}}>{ktem.name}</span>
+                                                                                // :<span  >{ktem.name}</span>
                                                                             }
                                                                         </div>
                                                                     )

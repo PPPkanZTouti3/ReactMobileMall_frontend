@@ -16,6 +16,10 @@ import GoodsDetail from '@/pages/GoodsDetail';
 import Order from '@/pages/Order';
 import Search from '@/pages/Search';
 import Searchlist from '@/pages/Searchlist';
+import SuccessPay from './SuccessPay'
+import Collection from './Collection'
+import Sales from './Sales'
+import News from './News'
 
 class Index extends Component {
     // componentDidMount(){
@@ -50,12 +54,16 @@ class Index extends Component {
                         <Route exact path="/" component={Main}></Route>
                         <Route exact path="/index" render={()=><Redirect to="/"/>}></Route>
                         <Route exact path="/cate" component={Cate}></Route>
-                        <Route  path="/cate" component={Cate}></Route>
+                        <Route path="/cate" component={Cate}></Route>
                         <Route path="/goods/:id" component={GoodsDetail}></Route>
+                        <Route path="/success_pay/:id" component={SuccessPay}></Route>
                         <Route path="/order" component={Order}></Route>
+                        <Route path="/collection" component={Collection}></Route>
                         <Route exact path="/search" component={Search}></Route>
                         <Route exact path="/searchlist/:s" component={Searchlist}></Route>
                         <Route exact path="/cart" component={Cart}></Route>
+                        <Route exact path="/sales" component={Sales}></Route>
+                        <Route exact path="/news" component={News}></Route>
                         <Route component={My}></Route>
                     </Switch>
                 </div>

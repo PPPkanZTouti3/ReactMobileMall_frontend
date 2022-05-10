@@ -80,10 +80,16 @@
                 }
                 .o-right{
                     position: absolute;
-                    top: 17px;
+                    top: 6px;
                     right: 0px;
+                    .over-time {
+                        color: red;
+                        font-size: 16px;
+                        font-weight: bold;
+                    }
                     button{
                         height:26px;
+                        font-size: 14px;
                         line-height:26px;
                         margin:0;
                         padding:0 15px;
@@ -91,6 +97,7 @@
                         background-color: #ff5b05;
                         color:#fff;
                         border:0;
+                        margin-bottom: 3px;
                     }
                 }
             }

@@ -18,6 +18,9 @@ ul, li {
             font-style: normal;
             margin:0;
             padding: 0;
+            .active {
+                color: #e93b3d
+            }
             li{
                 font-style: normal;
                 overflow: hidden;
@@ -60,9 +63,11 @@ ul, li {
         .filter{
             background-color: #fff;
             display: flex;
-            .filter-item{
+            .filter-item, .filter-item-active{
                 line-height:24px;
                 height:24px;
+                // font-weight: bold;
+                font-size: 16px;
                 padding:8px 0;
                 color:#333;
                 flex:1;
@@ -74,6 +79,9 @@ ul, li {
                     height:14px;
                     display: block;
                 }
+            }
+            .filter-item-active {
+                color: #e93b3d;
             }
         }
         .search-list{

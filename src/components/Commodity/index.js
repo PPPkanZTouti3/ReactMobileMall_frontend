@@ -2,8 +2,14 @@ import React, {Component} from 'react'
 import {withRouter} from 'react-router-dom'
 import PropTypes from 'proptypes'
 import {connect} from 'react-redux'
+import {reqRecommendProd} from '@/api'
 
 class Commodity extends Component {
+
+    state = {
+        data: []
+    }
+
     static propTypes = {
         data:PropTypes.array.isRequired
     };
@@ -12,24 +18,38 @@ class Commodity extends Component {
     toGoodDetail = (id) => {
         this.props.history.push('/goods/' + id)
     }
+    
+    getRecommend = async () => {
+        let data = this.props.data;
+        let res = await reqRecommendProd(data);
+        console.log(res.data)
+        if(res.status === 0) {
+            this.setState({
+                data: res.data
+            })
+        }
+    }
 
-    componentDidMount(){
-
+    async componentDidMount(){
+        setTimeout(() => {
+            this.getRecommend()
+        }, 500)
+        console.log('home')
     }
     render() {
         return (
             <div className="good-box">
                 {
-                    this.props.data.map((item,i)=>{
+                    this.state.data.map((item,i)=>{
                         return (
                             <div key={i} className="good-item" onClick={() => this.toGoodDetail(item.groupId)}>
                                 <div className="head">
-                                    <img className="item-img" src={item.img} alt=""/>
+                                    <img className="item-img" src={item.image[0]} alt=""/>
                                 </div>
                                 <div className="body">
-                                    <p>{item.title}</p>
+                                    <p>{item.name}</p>
                                     <div>
-                                        <span>￥{item.price}</span>
+                                        <span>￥{item.defaultPrice}</span>
                                     </div>
                                 </div>
                             </div>
@@ -41,4 +61,6 @@ class Commodity extends Component {
     }
 }
 
-export default connect()(withRouter(Commodity))
+export default connect(
+    state => ({user: state.user})
+)(withRouter(Commodity))

@@ -7,6 +7,7 @@ import * as searchAction from '@/redux/actions/searchAction'
 import {SearchBar,Toast} from 'antd-mobile'
 //引入路由跳转装饰器
 import {withRouter} from 'react-router-dom'
+import storageUtils from '@/utils/storageUtils'
 
 import './search_header.scss'
 
@@ -26,14 +27,16 @@ class SearchHead extends Component {
     }
     // 返回某个页面
     returnPage(){
-        let prevPath=sessionStorage.getItem('__search_prev_path__');
-        if(this.props.location.pathname===prevPath){
-            this.props.history.push('/index');
-            sessionStorage.setItem('__search_prev_path__','/');
-        }else{
-            this.props.history.push(prevPath)
-        }
+        // let prevPath=sessionStorage.getItem('__search_prev_path__');
+        // if(this.props.location.pathname===prevPath){
+        //     this.props.history.push('/index');
+        //     sessionStorage.setItem('__search_prev_path__','/');
+        // }else{
+        //     this.props.history.push(prevPath)
+        // }
+        this.props.history.go(-1)
     }
+
     //组件装载完毕
     componentDidMount(){
         this.refs.search.focus();
@@ -46,6 +49,7 @@ class SearchHead extends Component {
             this.props.goto(this.state.val)
         }
     }
+
     render() {
         return (
             <div className="search-head">
@@ -78,6 +82,13 @@ class SearchHead extends Component {
                 </div>
                 <div className="right right-btn">
                     <button className="submit-btn" onClick={()=>{
+                        let searchList = JSON.parse(storageUtils.getSearchList());
+                        this.state.val && searchList.unshift(this.state.val)
+                        searchList = Array.from(new Set(searchList))
+                        if(searchList.length > 10) {
+                            searchList = searchList.slice(0, 10)
+                        }
+                        storageUtils.saveSearchList(JSON.stringify(searchList))
                         this.submit()
                     }}>搜索</button>
                 </div>

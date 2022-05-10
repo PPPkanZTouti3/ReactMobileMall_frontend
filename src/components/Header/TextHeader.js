@@ -38,7 +38,8 @@ class TextHeader extends Component {
                 this.props.returnbtn?
                 <div className="left" onClick={()=>{
                     //返回到某页
-                    this.returnPage()
+                    // this.returnPage()
+                    this.props.history.go(-1)
                 }}>
                     <img src={require("@/assets/images/return.png")} alt="return"/>
                 </div>

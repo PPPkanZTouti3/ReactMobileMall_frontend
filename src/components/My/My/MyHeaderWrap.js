@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
+import { reqAliPay } from '@/api'
 
 class MyHeaderWrap extends Component {
 
@@ -40,19 +41,20 @@ class MyHeaderWrap extends Component {
                             className="setting">
                             地址管理
                         </a>
-                        <a 
+                        {/* <a 
                             style={{
                                 top:'42px',
                                 backgroundImage:'url('+require('@/assets/images/msg.png')+')',
                                 backgroundRepeat:'no-repeat',
                                 backgroundPosition:'center left'
                             }}
-                            className="setting">
+                            className="setting"
+                            >
                             消息
-                        </a>
+                        </a> */}
                     </div>
                     <div className="my-section">
-                        <div className="my-assets">
+                        {/* <div className="my-assets">
                             <a onClick={()=>{
                                 this.props.goto('/my/purse');
                                 sessionStorage.setItem('__search_prev_path__','/my')
@@ -74,21 +76,8 @@ class MyHeaderWrap extends Component {
                                 <b>87454.00</b>
                                 <span>积分</span>
                             </a>
-                            {/* <a onClick={()=>{
-                                this.props.goto('/my/integral');
-                            }}>
-                                <b>87454.00</b>
-                                <span>分享积分</span>
-                            </a> */}
-                            {/* <a >
-                                <img src={require('@/assets/images/recharge.png')} alt=""/>
-                                <span>充值</span>
-                            </a>
-                            <a >
-                                <img src={require('@/assets/images/withdraw.png')} alt=""/>
-                                <span>提现</span>
-                            </a> */}
-                        </div>
+                           
+                        </div> */}
                     </div>
                 </div>
             </div>

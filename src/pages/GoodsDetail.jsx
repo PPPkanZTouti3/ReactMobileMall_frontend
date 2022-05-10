@@ -2,15 +2,18 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import Header from '@/components/Header/Header'
 import {Carousel,Stepper,Toast} from 'antd-mobile'
+import { Toast as Toast_v5 } from 'antd-mobile-v5'
 import '@/assets/styles/goodsdetail.scss'
 import 'react-photoswipe/lib/photoswipe.css'
 import {PhotoSwipe} from 'react-photoswipe'
 import {unique} from '@/utils/util.js'
 import Loading from '@/components/Loading'
 import classnames from 'classnames'
-import axios from 'axios'
+import {watchProd, cartProd, buyProd, starProd} from '@/config'
+import { reqWatchProd, reqProdByGroupId, reqAddToCart, reqAddToCollection, reqDelCollection, reqCheckCollected } from '@/api'
 import $ from 'jquery'
-import goodsDetail from '@/assets/mock/goods_detail'
+// import goodsDetail from '@/assets/mock/goods_detail'
+// import { imgBase } from '@/config'
 
 class GoodsDetail extends Component {
   constructor(props){
@@ -19,7 +22,7 @@ class GoodsDetail extends Component {
       loading:true,
       data: null,
       val: 1, // 购买数量
-      sku:null,
+      sku:null, // detailProduct
       token:null,
       goodId:props.match.params.id,
       stockNum:null,
@@ -33,6 +36,7 @@ class GoodsDetail extends Component {
       specNameArr:null,
       spcount:null,
       allBtn:true,
+      __html: '',
       style:{
         height:'auto',
         width:'auto'
@@ -47,7 +51,8 @@ class GoodsDetail extends Component {
         escKey: true,
         shareEl: false,
         shareButtons:[]
-      }
+      },
+      isCollected: false
     }
   }
 
@@ -92,33 +97,43 @@ class GoodsDetail extends Component {
   //获取商品信息
   getGoodsInfo(){
     (async ()=>{
-      let data = goodsDetail;
-      // console.log(res)
-      // let {data} = res.data
-      
+      // 从当前url中获取groupId
+      let groupId = window.location.href.split('/goods/')[1]
+      let res = await reqProdByGroupId(groupId);
+      let data = res.data
+      console.log(data)
       // mock数据处理 具体还得写ajax请求
-      data.productImage = data.productImage.indexOf('images/test/') !== -1 ? data.productImage :  'images/test/' + data.productImage; 
+      // data.image[0] = data.image[0].indexOf(imgBase) !== -1 ? imgBase + data.image[0] : data.image[0]; 
       let pictures = []
       //渲染数据
-      if (data.pictures) {
-          pictures = data.pictures.split(',')
+      if (data.image.length) {
+          pictures = data.image
           for (var i in pictures) {
-              pictures[i] = 'images/test/' + pictures[i]
+              pictures[i] = pictures[i]
           }
-          pictures.unshift(data.productImage)
+          // pictures.unshift(data.productImage)
       }
-      if (pictures.length < 1) {
-          pictures.push(data.productImage)
-      }
+      // if (pictures.length < 1) {
+      //     pictures.push(data.productImage)
+      // }
       let picobj=pictures.map(v=>{
         return {
-          src:require(`@/assets/${v}`)
+          src: v
         }
       })
       data.picobjs=picobj
+      let __html = "<p style='margin:0;padding:0;'>";
+      if(data.introduction) {
+        data.introduction.forEach(item => {
+          __html += "<img src="+item+">"
+        })
+      }
+
       this.setState({
         data,
-        loading:false
+        loading:false,
+        productName: data.name,
+        __html
       })
       this.filterData(data)
     })()
@@ -129,29 +144,30 @@ class GoodsDetail extends Component {
     let that = this;
     let stockNum = sku.stockNum;
     let popPrice = sku.price.toFixed(2);
-    let skuId = sku.id;
-    let productName = sku.productName;
+    let skuId = sku._id;
+    // let productName = sku.productName;
     that.setState({
       stockNum: stockNum,
       stockId: skuId,
       popPrice: popPrice,
       standard: '',
-      productName: productName,
+      // productName: productName,
     })
   }
   //过滤规格数据
   filterData(result){
     //刚开始进来的时候先显示一部分内容
     let that = this;
-    let skuData = result.sku[0];
+    let skuData = result.detailProduct[0];
+    // console.log(skuData)
     that.setState({
-      sku: result.sku
+      sku: result.detailProduct
     })
     //第一次进来设置数据
     that.setAllDataStandard(skuData);
     //判断有一个规格的时候
-    let sku = result.sku;
-    let productImage = result.productImage;
+    let sku = result.detailProduct;
+    let productImage = result.image;
     that.setState({
       productImage: productImage
     })
@@ -159,11 +175,11 @@ class GoodsDetail extends Component {
     let specCount=0;//规格组的数量
     let data=[];//对应规格组的规格
     let code = [];
-    for (let i = 0; i < sku[0].skuValues.length;i++){
+    for (let i = 0; i < sku[0].attri.length;i++){
       specCount++;
       data.push([]);
       code.push([]);
-      specNameArr.push(sku[0].skuValues[i].specificationName)
+      specNameArr.push(sku[0].attri[i].attriName)
     }
     that.setState({
       specCount: specCount
@@ -171,12 +187,12 @@ class GoodsDetail extends Component {
     let finData = [];
     for (let i = 0; i < sku.length; i++) {
       var specSubArr=[];//规格值
-      var skuId = sku[i].id;  //库存id
+      var skuId = sku[i]._id;  //库存id
       console.log(skuId)
-      for (let j = 0; j < sku[i].skuValues.length;j++){
+      for (let j = 0; j < sku[i].attri.length;j++){
         specSubArr.push({
-          value:sku[i].skuValues[j].specificationValue,
-          code: sku[i].skuValues[j].specificationCode
+          value:sku[i].attri[j].attriValue,
+          code: sku[i].attri[j].groupAttriValueId
         });  //值
       }
       finData.push(specSubArr);
@@ -275,8 +291,8 @@ class GoodsDetail extends Component {
       let popPrice=null;
       for(let i in sku){
         let key=false;
-        for (let j in sku[i]['skuValues']){
-          if (sku[i]['skuValues'][j].specificationCode===codeArr[j]){
+        for (let j in sku[i]['attri']){
+          if (sku[i]['attri'][j].groupAttriValueId===codeArr[j]){
             key=true;
           }else{
             key=false;
@@ -285,7 +301,7 @@ class GoodsDetail extends Component {
         }
         if(key===true){
           stockNum=sku[i].stockNum;
-          stockId = sku[i].id;
+          stockId = sku[i]._id;
           popPrice = sku[i].price;
           break;
         }
@@ -313,12 +329,14 @@ class GoodsDetail extends Component {
     })
   }
   //加入购物车
-  addGoodOrCart(){
+  addGoodOrCart = async () => {
     //这样才能加入购物车
     //加入购物车
+    console.log(this.state)
     let that = this;
     let stockNum = that.state.stockNum;
     let allBtn = that.state.allBtn;
+    const { data, stockId, val, standard, productName, productImage, popPrice } = that.state
     if(this.state.loading){
       Toast.info('等待数据加载完毕',1);
     }else{
@@ -326,17 +344,32 @@ class GoodsDetail extends Component {
         if (this.state.val > stockNum) {
           Toast.info('库存不足',1);
         } else {
-          let url = '/alliance/cart/addCart'
           let params = {
-            token: that.state.token,
-            productId: that.state.goodId,
-            quantity: this.state.val,
-            skuId: that.state.stockId
+            // token: that.state.token,
+            groupId: data._id,
+            productId: stockId,
+            count: val,
+            userId: that.props.user._id,
+            desc: standard,
+            productName,
+            productImage: productImage[0],
+            price: popPrice,
+            stockNum,
+            score: cartProd
           }
-          this.props.history.push({
-            pathname:'/order'
-          })
-          console.log(url, params)
+          let res = await reqAddToCart(params)
+          
+          if(res.status === 0) {
+            Toast_v5.show({
+              content: '添加成功',
+              icon: 'success',
+            })
+          } else {
+            Toast_v5.show({
+              content: '添加失败',
+              icon: 'fail',
+            })
+          }
         }
       } else {
         Toast.info('请选择规格',1);
@@ -367,10 +400,10 @@ class GoodsDetail extends Component {
               skuStr: that.state.standard,
               productName: that.state.productName,
               productPrice: that.state.popPrice,
-              productImage: that.state.productImage,
-              pickupWay: result.pickupWay
+              productImage: that.state.productImage[0],
+              pickupWay: result.pickupWay || '1'
           })
-          allData['pickupWay'] = result.pickupWay;
+          allData['pickupWay'] = result.pickupWay || '1';
           //保存数据到本地
           sessionStorage.setItem('goodDetailData', JSON.stringify(allData));
           sessionStorage.setItem('__search_prev_path__',this.props.location.pathname)
@@ -381,6 +414,44 @@ class GoodsDetail extends Component {
       }
     }
   }
+
+  addToCollection = async () => {
+    let res = await reqAddToCollection(this.state.goodId, this.props.user._id, starProd)
+    if(res.status) {
+      Toast_v5.show({
+        content: '收藏异常',
+        icon: 'fail'
+      })
+    }
+  }
+
+  checkCollected = async () => {
+    let res = await reqCheckCollected(this.state.goodId, this.props.user._id);
+    if(res.status === 0 && res.data === 1) {
+      this.setState({
+        isCollected: true
+      })
+    }
+  }
+
+  delCollection = async () => {
+    let res = await reqDelCollection(this.state.goodId, this.props.user._id, starProd)
+    if(res.status) {
+      Toast_v5.show({
+        content: '收藏取消异常',
+        icon: 'fail'
+      })
+    }
+  }
+
+  // 推荐模块 浏览商品
+  watchProdFunc = async () => {
+    // 添加浏览记录 推荐模块 该商品加分
+    const userId = this.props.user._id;
+    const groupId = this.state.goodId;
+    await reqWatchProd(userId, groupId, watchProd);
+  }
+
   //组件装载完毕
   componentDidMount(){
     let self = this
@@ -389,6 +460,8 @@ class GoodsDetail extends Component {
       self.resize()
     })
     this.getGoodsInfo()
+    this.checkCollected()
+    this.watchProdFunc()
   }
   render() {
     let prevPath = sessionStorage.getItem('__search_prev_path__')
@@ -459,14 +532,24 @@ class GoodsDetail extends Component {
           <div className="buy-wrap">
               <div className="goods-name">
                 <div className="goods-title">
-                {this.state.data&&this.state.data.productName}
+                {this.state.data&&this.state.data.name}
                 </div>
-                <div className="goods-favour">
+                <div className={this.state.isCollected ? "goods-favour-active" : "goods-favour"} onClick={ () => {
+                  if(this.state.isCollected) {
+                    this.delCollection()
+                  }
+                  else {
+                    this.addToCollection()
+                  }
+                  this.setState({
+                    isCollected: !this.state.isCollected
+                  })
+                } }>
                   收藏
                 </div>
               </div>
               <div className="goods-desc">
-              {this.state.data&&this.state.data.desc}
+              {this.state.data&&this.state.data.description}
               </div>
           </div>
           {/* 商品详情--> */}
@@ -474,19 +557,24 @@ class GoodsDetail extends Component {
           <div className="price-wrap">
               <div className="price">
                 <span><i>￥</i>{this.state.data&&this.state.popPrice}</span>
-                <span>￥{this.state.data&&this.state.data.originaPrice}</span>
+                {/* <span>￥{this.state.data&&this.state.data.originaPrice}</span> */}
               </div>
               <div className="scoket">
                 库存 <span>{this.state.data&&this.state.stockNum}</span>
               </div>
           </div>
            {/* 价格--> */}
-           <div className="item-list">
-            <h3>选择</h3>
-            <div className="item-content">
-              {this.state.standard}
-            </div>
-          </div>
+           {
+             this.state.specData&&this.state.specData.length>0? (
+              <div className="item-list">
+                <h3>选择</h3>
+                <div className="item-content">
+                  {this.state.standard}
+                </div>
+              </div>
+             ) : null
+           }
+           
            {/* <--规格 */}
           <div className="sku-wrap">
             <div className="property-div">
@@ -540,7 +628,7 @@ class GoodsDetail extends Component {
           {/* 规格--> */}
           <div className="info-wrap">
             <div className="info-header">商品详情</div>
-            <div className="info-body" dangerouslySetInnerHTML = {{ __html:this.state.data&&this.state.data.introduction }}>
+            <div className="info-body" dangerouslySetInnerHTML = {{ __html:this.state.__html }}>
             </div>
           </div>
         </div>
@@ -551,7 +639,7 @@ class GoodsDetail extends Component {
             <img src={require(`@/assets/images/msg@default.png`)} alt="客服"/>
             <span>客服</span>
           </div>
-          <button className="btn-orange">加入购物车</button>
+          <button className="btn-orange" onClick={this.addGoodOrCart}>加入购物车</button>
           <button onClick={()=>{
             this.buyImmediately()
           }}>购买</button>
@@ -560,4 +648,6 @@ class GoodsDetail extends Component {
     )
   }
 }
-export default connect()(GoodsDetail)
+export default connect(
+  state => ({user: state.user})
+)(GoodsDetail)

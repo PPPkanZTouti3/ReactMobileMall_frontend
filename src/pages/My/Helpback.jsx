@@ -5,6 +5,7 @@ import {bindActionCreators} from 'redux'
 import * as routerAction from '@/redux/actions/routerAction'
 //antd-mobile组件
 import { Tabs, Button } from 'antd-mobile'
+import { TextArea, Toast } from 'antd-mobile-v5'
 //头部组件
 import TextHeader from '@/components/Header/TextHeader'
 //classnames
@@ -28,28 +29,28 @@ class Helpback extends Component {
     }
   }
   componentDidMount(){
-    this.editor = new wangEditor(this.refs.editor);
-    this.editor.customConfig.showLinkImg = false
-    this.editor.customConfig.uploadImgParams = {
-        fileType: 'image',
-        fileModule:'product',
-        isZoom: 0
-    }
-    this.editor.customConfig.uploadImgServer = ''  // 上传图片到服务器
-    this.editor.customConfig.menus = [
-    'image',  // 插入图片
-    ]
-    this.editor.customConfig.uploadImgHooks={
-        customInsert: function (insertImg, result, editor) {
-            // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
-            // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
+    // this.editor = new wangEditor(this.refs.editor);
+    // this.editor.customConfig.showLinkImg = false
+    // this.editor.customConfig.uploadImgParams = {
+    //     fileType: 'image',
+    //     fileModule:'product',
+    //     isZoom: 0
+    // }
+    // this.editor.customConfig.uploadImgServer = ''  // 上传图片到服务器
+    // this.editor.customConfig.menus = [
+    // 'image',  // 插入图片
+    // ]
+    // this.editor.customConfig.uploadImgHooks={
+    //     customInsert: function (insertImg, result, editor) {
+    //         // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
+    //         // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
 
-            // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
-            var url = result.url
-            insertImg(url)
-        }
-    }
-    this.editor.create()
+    //         // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
+    //         var url = result.url
+    //         insertImg(url)
+    //     }
+    // }
+    // this.editor.create()
   }
   render() {
     return (
@@ -116,12 +117,20 @@ class Helpback extends Component {
                   {/* 反馈详细 */}
                   <div className="feedback-text">
                     <div id="editor" ref="editor">
-                        <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
+                    <TextArea
+                      showCount
+                      maxLength={150}
+                    />
                     </div>
                   </div>
                   {/* 反馈提交 */}
                   <div className="feedback-footer">
-                    <Button type="primary">提交</Button>
+                    <Button type="primary" onClick={() => {
+                      Toast.show({
+                        content: '提交成功',
+                        icon: 'success'
+                      })
+                    }}>提交</Button>
                   </div>
                 </div>
               </div>

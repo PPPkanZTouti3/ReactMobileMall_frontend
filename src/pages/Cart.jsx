@@ -9,9 +9,9 @@ import Loading from '@/components/Loading'
 import '@/assets/styles/cart.scss'
 //ajax
 import axios from 'axios'
-import { reqCartList } from '@/api'
+import { reqCartList, reqAddToCart, reqDeleteCartProd } from '@/api'
 import classnames from 'classnames'
-
+import PubSub from 'pubsub-js'
 
 class Cart extends Component {
     constructor(props){
@@ -22,16 +22,17 @@ class Cart extends Component {
             checkedNum:0,
             allPrice:0,
             cartNmu:0,
-            data:[]
+            data:[],
+            selectAll: false
         }
     }
     //获取购物车列表
     getCartList(){
         (async ()=>{
-            let {data} = await reqCartList();
-            console.log('=========购物车=======',data)
+            let res = await reqCartList(this.props.user._id);
+            console.log('=========购物车=======',res)
             this.setState({
-                data:data.data,
+                data:res.data,
                 loading:false,
                 checkedNum:0,
                 allPrice:0,
@@ -55,11 +56,13 @@ class Cart extends Component {
     }
     //改变库存
     changeStock(id,val){
+        let curCnt = 0;
         let newData = this.state.data.map((item,i)=>{
-            if(item.id===id){
+            if(item.productId===id){
+                curCnt = item.count
                 return {
                     ...item,
-                    value:val
+                    count:val
                 }
             }else{
                 return item;
@@ -67,6 +70,14 @@ class Cart extends Component {
         })
         this.setState({
             data:newData
+        }, async () => {
+            let params = {
+                // token: that.state.token,
+                productId: id,
+                count: val - curCnt,
+                userId: this.props.user._id,
+              }
+            await reqAddToCart(params)
         })
         this.calc(newData)
     }
@@ -95,8 +106,8 @@ class Cart extends Component {
         newData.forEach((item,i)=>{
             if(item.check){
                 cartNmu+=1;
-                checkedNum+=parseFloat(item.value);
-                allPrice+=parseFloat(item.value)*parseFloat(item.price)
+                checkedNum+=parseFloat(item.count);
+                allPrice+=parseFloat(item.count)*parseFloat(item.price)
             }
         })
         this.setState({
@@ -107,18 +118,67 @@ class Cart extends Component {
     }
     //购买
     buy(){
-        console.log(this.state)
-    }
-    delete(){
-        let deleteData = this.state.data.filter(v=>{
-            return v.check === true
+        const { data } = this.state;
+        console.log(data)
+        
+        var allData = {};
+        allData['items']=[]
+        let hasPayedProd = []
+        data.map(prod => {
+            allData['items'].push({
+                productId: prod.groupId,
+                selectQuantity: prod.count,
+                skuId: prod.productId,
+                skuStr: prod.desc,
+                productName: prod.productName,
+                productPrice: prod.price,
+                productImage: prod.productImage,
+                pickupWay: '1'
+            })
+            hasPayedProd.push(prod._id)
         })
-        console.log(deleteData)
+        
+        allData['pickupWay'] = '1';
+        console.log(allData)
+        // //保存数据到本地
+        sessionStorage.setItem('goodDetailData', JSON.stringify(allData));
+        sessionStorage.setItem('__search_prev_path__',this.props.location.pathname)
+        
+        // 发布支付成功后要删除的购物车物品
+        localStorage.setItem('hasPayedProd', JSON.stringify(hasPayedProd))
+        console.log(hasPayedProd)
+        this.props.history.push('/order')
+    }
+    delete = async () => {
+        const _ids = []
+        this.state.data.forEach(v=>{
+            if(v.check === true) {
+                _ids.push(v._id)
+            }
+        })
+        let res = await reqDeleteCartProd({_ids})
+        console.log(res)
+        if(res.status === 0) {
+            let data = this.state.data
+            data.map((item, i) => {
+                _ids.map(_id => {
+                    if(_id == item._id)
+                    this.state.data.splice(i, 1)
+                })
+            })
+            this.setState({data, deleteAll: false, selectAll: false})
+            this.calc(data)
+        }
     }
     //删除购物车
     //装载组件
     componentDidMount(){
         this.getCartList()
+        PubSub.subscribe('deleteCartProd',(msg, data) =>{
+            this.setState({
+                data: this.state.data.filter((item) => item._id !== data._id)
+            })
+          })
     }
     render() {
         return (
@@ -148,9 +208,15 @@ class Cart extends Component {
                     this.state.deleteAll?
                     <div className="cart-footer">
                         <div>
-                            <Checkbox onChange={(e)=>{
-                                this.allChange(e)
-                            }}/>
+                            <Checkbox 
+                                checked={this.state.selectAll}
+                                onChange={(e)=>{
+                                    this.allChange(e)
+                                    this.setState({
+                                        selectAll: !this.state.selectAll
+                                    })
+                                }}
+                            />
                             <div>全选</div>
                         </div>
                         <div></div>
@@ -167,15 +233,21 @@ class Cart extends Component {
                     :
                     <div className="cart-footer">
                         <div>
-                            <Checkbox onChange={(e)=>{
-                                this.allChange(e)
-                            }}/>
+                            <Checkbox 
+                                checked={this.state.selectAll}
+                                onChange={(e)=>{
+                                    this.allChange(e)
+                                    this.setState({
+                                        selectAll: !this.state.selectAll
+                                    })
+                                }}
+                            />
                             <div>全选</div>
                         </div>
                         <div className="all-pirce">
                             <p>
                                 <span>总计：</span>
-                                <span>￥{this.state.allPrice}</span>
+                                <span>￥{this.state.allPrice.toFixed(2)}</span>
                             </p>
                         </div>
                         <div className={classnames({
@@ -195,4 +267,6 @@ class Cart extends Component {
     }
 }
 
-export default connect()(Cart)
+export default connect(
+    state => ({user: state.user})
+)(Cart)

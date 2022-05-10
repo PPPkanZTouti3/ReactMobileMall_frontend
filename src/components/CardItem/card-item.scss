@@ -1,0 +1,97 @@
+.card-c-item{
+    overflow: hidden;
+    position: relative;
+    padding:10px 10px 10px 0;
+    box-sizing: border-box;
+    
+    .card-c-check{
+        width:40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height:calc(100% - 20px);
+        box-sizing: border-box;
+        position: absolute;
+    }
+}
+.left {
+    width: 100%;
+    font-size: 16px;
+    text-align: right;
+    font-weight: bold;
+}
+
+.active {
+    color: red;
+    font-size: 20px;
+}
+
+.card-ci-left{
+      position: absolute;
+      top: 0;
+      left: 15px;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img{
+          height:85px;
+          width:85px;
+          display: block;
+          border:1px solid #eee;
+      }
+}
+.card-ci-right{
+  min-height:87px;
+  margin-left:125px;
+  margin-right:8px;
+  .am-stepper-handler{
+      line-height: 28px;
+      font-size: 14px;
+      width: 26px;
+      height: 26px;
+      display:flex;
+      justify-content: center;
+      align-items: center;
+  }
+  .r-title{
+      font-size:16px;
+      white-space:normal;
+      font-weight:bold;
+      overflow : hidden;
+      max-height: 46px;
+      span{
+          overflow : hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          /*! autoprefixer: ignore next */
+          -webkit-box-orient: vertical;
+          white-space:inherit;
+          -webkit-line-clamp: 2;
+      }
+  }
+  .r-desc{
+      color: #999;
+      font-size: 12px;
+      overflow : hidden;
+  }
+  .r-step{
+      display: flex;
+      justify-content: space-between;
+      .r-price{
+          color:#ff5b05;
+          font-size:16px;
+          line-height:30px;
+          span{
+              font-size:12px;
+          }
+      }
+      .span-stepper{
+          width:100px;
+      }
+      .am-stepper-input{
+          font-size:12px;
+      }
+  }
+}

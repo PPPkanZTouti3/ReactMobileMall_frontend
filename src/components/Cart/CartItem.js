@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
-import {Checkbox, Stepper, SwipeAction, Toast} from 'antd-mobile'
+import {withRouter} from 'react-router-dom'
+import {Checkbox, Stepper,SwipeAction, Toast} from 'antd-mobile'
+import { reqDeleteCartProd } from '@/api'
+import PubSub from 'pubsub-js'
 
-
-class CratItem extends Component{
+class CartItem extends Component{
     //构造函数
     constructor(props){
         super(props)
@@ -15,8 +17,19 @@ class CratItem extends Component{
         // console.log(checked,id)
         this.props.checkChange(id,checked)
     }
+
+    deleteProduct = async (_id) => {
+        const _ids = [];
+        _ids.push(_id)
+        let res = await reqDeleteCartProd({_ids});
+        if(res.status === 0) {
+            PubSub.publish('deleteCartProd', {_id});
+        }
+    }
+
     render(){
         let item = this.props.item
+        console.log('======', item)
         return (
             <SwipeAction
             style={{ backgroundColor: '#f5f5f9',paddingBottom:'10px' }}
@@ -24,8 +37,7 @@ class CratItem extends Component{
                 {
                 text: '删除',
                 onPress: () =>{
-                    console.log('delete')
-                    return false;
+                    this.deleteProduct(item._id)
                 },
                 style: { backgroundColor: '#F4333C', color: 'white' },
                 },
@@ -43,12 +55,13 @@ class CratItem extends Component{
                     }}/>
                 </div>
                 {/* 商品图片 */}
-                <div className="cart-ci-left">
-                    <img src={item.img} alt={item.label}/>
+                <div className="cart-ci-left" onClick={() => this.props.history.push('/goods/'+item.groupId)}>
+                    <img src={item.productImage} alt={item.productName}/>
                 </div>
                 {/* 商品信息 */}
                 <div className="cart-ci-right">
-                    <div className="r-title"><span>{item.lable}</span></div>
+                    <div className="r-title"><span>{item.productName}</span></div>
+                    <div className="r-desc"><span>{item.desc}</span></div>
                     <div className="r-step">
                         <span className="r-price"><span>￥</span>{item.price.toFixed(2)}</span>
                         <span className="span-stepper">
@@ -58,13 +71,14 @@ class CratItem extends Component{
                                 showNumber
                                 max={item.stockNum}
                                 min={1}
-                                value={item.value}
+                                defaultValue={item.count}
                                 onChange={(val)=>{
+                                    console.log(val)
                                     if(val>item.stockNum){
                                         Toast.info("库存不足",1)
-                                        this.props.changeStock(item.id,item.stockNum)
+                                        this.props.changeStock(item.productId,item.stockNum)
                                     }else{
-                                        this.props.changeStock(item.id,val)
+                                        this.props.changeStock(item.productId,val)
                                     }
                                 }}
                             />
@@ -76,4 +90,4 @@ class CratItem extends Component{
         )
     }
 }
-export default CratItem
+export default withRouter(CartItem)

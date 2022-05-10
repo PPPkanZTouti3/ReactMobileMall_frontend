@@ -126,6 +126,11 @@
                         -webkit-line-clamp: 2;
                     }
                 }
+                .r-desc{
+                    color: #999;
+                    font-size: 12px;
+                    overflow : hidden;
+                }
                 .r-step{
                     display: flex;
                     justify-content: space-between;

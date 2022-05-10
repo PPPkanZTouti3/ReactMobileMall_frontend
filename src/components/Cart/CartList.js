@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 
 import CartItem from '@/components/Cart/CartItem'
 
-class CratList extends Component{
+class CartList extends Component{
     render(){
         return (
             <div className="cart-main">
@@ -26,4 +26,4 @@ class CratList extends Component{
         )
     }
 }
-export default CratList
+export default CartList

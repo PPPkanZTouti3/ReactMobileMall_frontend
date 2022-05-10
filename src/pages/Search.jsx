@@ -5,18 +5,21 @@ import * as routerAction from '@/redux/actions/routerAction'
 import SearchHead from '@/components/Header/SearchHead'
 import '@/assets/styles/search.scss'
 import Tag from '@/components/Tag/index.js'
+import storageUtils from '@/utils/storageUtils'
+import {searchHot} from '@/config'
 
 class Search extends Component {
   constructor(props){
     super(props);
     this.state={
-      history:['react','电脑'],
-      searchHot:['rec','电脑','照片扫描仪','智能手表','功夫茶杯','广角镜头手机'],
-      searchList:['react','react native','react nike','react 跑鞋','react全栈','reactjs']
+      history: JSON.parse(storageUtils.getSearchList()),
+      searchHot,
+      // searchList: ['react','react native','react nike','react 跑鞋','react全栈','reactjs']
     }
     console.log(this.props)
   }
-  gotoList(v){
+  async gotoList(v){
+    console.log('v',v)
     sessionStorage.setItem('__search_prev_path__',this.props.location.pathname)
     this.props.history.push('/searchlist/'+v)
     this.props.router.changePath('/searchlist/'+v)
@@ -33,7 +36,10 @@ class Search extends Component {
             <div className="search-land search-history">
               <label>
                 <span>最近搜索</span>
-                <img src={require(`@/assets/images/delete.png`)} alt="delete"/>
+                <img src={require(`@/assets/images/delete.png`)} alt="delete" onClick={() => {
+                  storageUtils.removeSearchList()
+                  this.setState({history: []})
+                }} />
               </label>
               <div className="search-tag">
                 {
@@ -56,6 +62,13 @@ class Search extends Component {
                   this.state.searchHot.length>0?
                   this.state.searchHot.map((v,i)=>{
                     return (<Tag key={i} onClick={()=>{
+                      let searchList = JSON.parse(storageUtils.getSearchList());
+                        v && searchList.unshift(v)
+                        searchList = Array.from(new Set(searchList))
+                        if(searchList.length > 10) {
+                            searchList = searchList.slice(0, 10)
+                        }
+                        storageUtils.saveSearchList(JSON.stringify(searchList))
                       this.gotoList(v)
                     }}>{v}</Tag>)
                   })
@@ -66,7 +79,7 @@ class Search extends Component {
           </div>
           :
           <div className="search-main searct-lists">
-            <ul>
+            {/* <ul>
               {
                 this.state.searchList.length>0?
                 this.state.searchList.map((v,i)=>{
@@ -79,7 +92,7 @@ class Search extends Component {
                 :
                 <li style={{textAlign:'center',padding:'20px'}}>暂时数据</li>
               }
-            </ul>
+            </ul> */}
           </div>
         }
       </div>
