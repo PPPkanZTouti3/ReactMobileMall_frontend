@@ -73,12 +73,12 @@ class UserInfo extends Component  {
                     }
                 >
                     {/* 头像 */}
-                    <Form.Item
+                    {/* <Form.Item
                         name='profile'
                         label='头像'
                     >
                         TODO
-                    </Form.Item>
+                    </Form.Item> */}
 
                     {/* 昵称 */}
                     <Form.Item

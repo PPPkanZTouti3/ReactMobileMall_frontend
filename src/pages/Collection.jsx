@@ -26,21 +26,38 @@ class Collection extends Component {
         this.props.history.replace('/')
     }
 
-    async componentDidMount() {
-        let res = await reqCollection(this.props.user._id);
+    getCollection = async () => {
+        let res = await reqCollection(this.props.user._id)
+        console.log(res)
         if(res.status === 0) {
             console.log(res.data)
             this.setState({
                 collectionList: res.data,
                 isLoading: false
+            },() => {
+                console.log('ok')
             })
         }
+        else {
+            console.log(res.msg)
+        }
+        // console.log('========',res.data)
+        return res
+    }
+
+    componentDidMount() {
+        console.log('////')
+        this.getCollection()
+            
+        
+            
+        
         PubSub.subscribe('cancelCollection',(msg, data) =>{
             console.log(data._id)
             this.setState({
                 collectionList: this.state.collectionList.filter((item) => item._id !== data._id)
             })
-          })
+        })
     }
 
     render() {

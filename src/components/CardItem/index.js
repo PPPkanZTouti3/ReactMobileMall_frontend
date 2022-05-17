@@ -29,7 +29,8 @@ class CardItem extends Component{
         const {item} = this.state
         const {index} = this.props
         const isSales = window.location.href.indexOf('sales') != -1 ? true : false;
-        console.log(index)
+        let elem = item;
+        if(typeof item.groupId != 'string') elem = item.groupId
         return (
             <SwipeAction
                 style={{ backgroundColor: '#fff',marginBottom:'5px', borderRadius: '10px' }}
@@ -48,14 +49,14 @@ class CardItem extends Component{
                     
                     {/* 商品图片 */}
                     <div className="card-ci-left" onClick={() => this.props.history.push('/goods/'+item._id)}>
-                        <img src={item.image[0]} alt={item.name}/>
+                        <img src={elem.image[0]} alt={elem.name}/>
                     </div>
                     {/* 商品信息 */}
                     <div className="card-ci-right">
-                        <div className="r-title"><span>{item.name}</span></div>
-                        <div className="r-desc"><span>{item.description}</span></div>
+                        <div className="r-title"><span>{elem.name}</span></div>
+                        <div className="r-desc"><span>{elem.description}</span></div>
                         <div className="r-step">
-                            <span className="r-price"><span>￥</span>{Number(item.defaultPrice).toFixed(2)}</span>
+                            <span className="r-price"><span>￥</span>{Number(elem.defaultPrice).toFixed(2)}</span>
                         </div>
                         {
                             isSales ? (

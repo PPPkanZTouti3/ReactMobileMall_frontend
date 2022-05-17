@@ -38,7 +38,7 @@ class NavFooter extends Component {
             ]
         }
     }
-    componentWillMount(){
+    UNSAFE_componentWillMount(){
         this.setState({
             selectedTab:this.props.location.pathname==='/'?'index':this.props.location.pathname.substring(1)
         })
