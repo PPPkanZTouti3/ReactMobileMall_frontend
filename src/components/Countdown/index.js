@@ -35,7 +35,7 @@ class CountDownItem extends React.Component {
         this.state.timer = setInterval(() => {
             let time = timeContent(this.props.payEndTime);
             this.updateTime(time)
-        }, 5000)
+        }, 1000)
     }
  
     componentWillUnmount() {

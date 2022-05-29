@@ -311,7 +311,7 @@ class GoodsDetail extends Component {
         val:1,
         stockId: stockId,
         allBtn: true,
-        popPrice: popPrice
+        popPrice: popPrice.toFixed(2)
       })
     }
   }
